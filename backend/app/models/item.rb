@@ -17,4 +17,15 @@ class Item < ApplicationRecord
   before_validation do
     self.slug ||= "#{title.to_s.parameterize}-#{rand(36**6).to_s(36)}"
   end
+
+  def placeholder
+    imege_path = "public/placeholder.png"
+    file_path = File.join(imege_path)
+    f = File.open(file_path, "r")
+    mime_type = Marcel::Magic.by_magic(f).type
+    img = f.read
+    base64_img = Base64.strict_encode64(img)
+    f.close
+    placeholder = "data:#{mime_type};base64,#{base64_img}"
+  end
 end

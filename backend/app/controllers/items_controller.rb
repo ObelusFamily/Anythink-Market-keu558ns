@@ -18,6 +18,7 @@ class ItemsController < ApplicationController
 
     render json: {
       items: @items.map { |item|
+        item.image = item.placeholder if item.image.empty?
         {
           title: item.title,
           slug: item.slug,
@@ -64,6 +65,7 @@ class ItemsController < ApplicationController
 
   def show
     @item = Item.find_by!(slug: params[:slug])
+    @item.image = @item.placeholder if @item.image.empty?
   end
 
   def update
